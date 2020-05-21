@@ -1,0 +1,32 @@
+version: "3.7"
+services:
+  student-list-api:
+    container_name: simple_api
+    hostname: student-list-api
+    image: api-student-list
+    volumes:
+      - ./simple_api/student_age.json:/data/student_age.json
+    ports:
+      - "4003:5000"
+    networks:
+      - pozos-app
+
+  website:
+    container_name: website
+    hostname: website
+    image: php:apache
+    environment:
+      USERNAME: "toto"
+      PASSWORD: "python"
+    volumes:
+      - ./website:/var/www/html
+    networks:
+      - pozos-app
+    ports:
+      - 4002:80
+    depends_on:
+      - student-list-api
+
+networks:
+  pozos-app:
+    name: pozos-app
