@@ -3,7 +3,7 @@ services:
   student-list-api:
     container_name: simple_api
     hostname: student-list-api
-    image: api-student-list
+    image: 192.168.48.134:5000/student-list-api
     volumes:
       - ./simple_api/student_age.json:/data/student_age.json
     ports:
