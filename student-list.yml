@@ -1,0 +1,95 @@
+---
+- hosts: app_vm
+  become: true
+  vars_files:
+    - "secrets/api-secrets.yml"
+  pre_tasks:
+    - name: Install epel release
+      package:
+        name: epel-release
+        state: present
+
+    - name: Install python-pip
+      package:
+        name: python-pip
+        state: present
+
+    - name: install git
+      package:
+        name: git
+        state: present
+
+  tasks:
+    - name: Create project directory
+      file:
+        path: "{{home}}/student-list"
+        state: directory
+      tags:
+        - build
+        - deploy
+
+#    - name: Retrieve student-list repo
+#      git:
+#        repo: "{{student_list_source_repo}}"
+#        dest: "{{home}}/student-list"
+#        version: "{{student_list_source_branch}}"
+#        accept_hostkey: yes
+#      tags:
+#        - build
+#        - deploy
+
+    - name: Add insecure registry
+      copy:
+        dest: "/etc/docker/daemon.json"
+        content: '{"insecure-registries" : ["192.168.48.134:5000"]}'
+
+    - name: Restart Docker
+      service:
+        name: docker
+        state: restarted
+#    - name: Build and push api image to our private registry
+#      docker_image:
+#        path: "{{home}}/student-list/simple_api"
+#        name: "{{private_registry}}/student-list-api"
+#        push: yes
+#        tag: "{{student_list_docker_image_tag}}"
+#      tags:
+#        - build
+
+    - name: Create a docker network to interconnect containers
+      docker_network:
+        name: network-student-list
+      tags:
+        - deploy
+
+    - name: Deploy student-list-api
+      docker_container:
+        name: student-list-api
+        hostname: student-list-api
+        image: "{{private_registry}}/student-list-api:latest"
+        state: started
+        volumes:
+          - "{{home}}/student-list/simple_api/student_age.json:/data/student_age.json"
+        networks:
+          - name: network-student-list
+        ports:
+          - "4003:5000"
+      tags:
+        - deploy
+
+    - name: Deploy website
+      docker_container:
+        name: website
+        image: php:apache
+        state: started
+        networks:
+          - name: network-student-list
+        volumes:
+          - "{{home}}/student-list/website:/var/www/html"
+        env:
+          USERNAME: toto
+          PASSWORD: python
+        ports:
+          - "4002:80"
+      tags:
+        - deploy
