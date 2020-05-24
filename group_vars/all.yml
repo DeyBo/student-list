@@ -1,0 +1,16 @@
+---
+student_list_source_repo: "https://github.com/DeyBo/student-list.git"
+student_list_source_branch: "master"
+
+student_list_docker_image_tag: "latest"
+
+home: "/home/centos"
+
+private_registry: "192.168.48.134:5000"
+
+#secret data vaulted
+gitlab_private_key: "{{ vault_gitlab_private_key }}"
+#dockerhub_login: "{{ vault_dockerhub_login }}"
+#docker_hub_email: "{{ vault_docker_hub_email }}"
+#dockerhub_pass: "{{ vault_dockerhub_password }}"
+
