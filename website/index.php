@@ -4,7 +4,7 @@
     </head>
 
     <body>
-        <h1>Student Checking App</h1>
+        <h1>Student Checking Ap</h1>
         <ul>
             <form action="" method="POST">
             <!--<label>Enter student name:</label><br />
