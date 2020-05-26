@@ -20,6 +20,11 @@
         state: present
 
   tasks:
+    - name: Remove project directory if already exists
+      file:
+        path: "{{home}}/student-list"
+        state: absent
+
     - name: Create project directory
       file:
         path: "{{home}}/student-list"
