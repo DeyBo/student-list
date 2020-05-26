@@ -34,6 +34,7 @@
         dest: "{{home}}/student-list"
         version: "{{student_list_source_branch}}"
         accept_hostkey: yes
+        force: yes
       tags:
         - build
         - deploy
