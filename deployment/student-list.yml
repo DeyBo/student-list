@@ -71,8 +71,6 @@
           - "{{home}}/student-list/simple_api/student_age.json:/data/student_age.json"
         networks:
           - name: network-student-list
-        ports:
-          - "4003:5000"
       tags:
         - deploy
 
