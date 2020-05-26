@@ -28,15 +28,15 @@
         - build
         - deploy
 
-#    - name: Retrieve student-list repo
-#      git:
-#        repo: "{{student_list_source_repo}}"
-#        dest: "{{home}}/student-list"
-#        version: "{{student_list_source_branch}}"
-#        accept_hostkey: yes
-#      tags:
-#        - build
-#        - deploy
+    - name: Retrieve student-list repo
+      git:
+        repo: "{{student_list_source_repo}}"
+        dest: "{{home}}/student-list"
+        version: "{{student_list_source_branch}}"
+        accept_hostkey: yes
+      tags:
+        - build
+        - deploy
 
     - name: Add insecure registry
       copy:
@@ -47,14 +47,6 @@
       service:
         name: docker
         state: restarted
-#    - name: Build and push api image to our private registry
-#      docker_image:
-#        path: "{{home}}/student-list/simple_api"
-#        name: "{{private_registry}}/student-list-api"
-#        push: yes
-#        tag: "{{student_list_docker_image_tag}}"
-#      tags:
-#        - build
 
     - name: Create a docker network to interconnect containers
       docker_network:
