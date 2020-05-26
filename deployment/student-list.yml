@@ -35,6 +35,7 @@
         version: "{{student_list_source_branch}}"
         accept_hostkey: yes
         force: yes
+        recursive: no
       tags:
         - build
         - deploy
