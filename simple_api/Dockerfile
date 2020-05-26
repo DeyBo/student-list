@@ -4,4 +4,4 @@ RUN pip install flask flask_httpauth flask_simpleldap python-dotenv
 COPY student_age.py /
 VOLUME ["/data"]
 EXPOSE 5000
-CMD ["ls","-l"]
+CMD ["ls","-l", "/data"]
